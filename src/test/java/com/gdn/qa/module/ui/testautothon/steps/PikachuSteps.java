@@ -31,8 +31,6 @@ public class PikachuSteps {
     @Autowired
     private PokemonData pokemonData;
 
-    @Autowired
-    ThreadRunner threadRunner;
 
   /*  @Given("^User on Google homepage$")
     public void userOnGoogleHomepage() {
@@ -73,8 +71,13 @@ public class PikachuSteps {
     @When("^user collect pokemon data from wikipedia , PokemonDB and PokeAPI$")
     public void userCollectPokemonDataFromWikipediaPokemonDBAndPokeAPI() {
         pokemonData.getWikipediaDatas().forEach((s, pokemonModel) -> {
-            threadRunner.setData(s,pokemonModel);
-            threadRunner.run();
+            ThreadRunner thread = new ThreadRunner(s, pokemonModel, pokemonSteps.getDriver());
+            thread.start();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         });
     }
 
