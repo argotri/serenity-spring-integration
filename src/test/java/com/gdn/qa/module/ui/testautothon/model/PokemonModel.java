@@ -13,4 +13,5 @@ import lombok.Data;
 @Builder
 public class PokemonModel {
     private String nationalNumber;
+    private String url;
 }

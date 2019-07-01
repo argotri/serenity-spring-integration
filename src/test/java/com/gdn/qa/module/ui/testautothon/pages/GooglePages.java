@@ -33,18 +33,33 @@ public class GooglePages extends PageObject {
     private WebElementFacade featuredBlock;
 
 
-    public void clickWikipediaLinkOnFeature(){
+    public String getWikipediaUrl(){
+        String link = "";
         if(!driverProperties.isMobile()){
-            featuredBlock
+            link = featuredBlock
                     .withTimeoutOf(10, ChronoUnit.SECONDS)
                     .waitUntilPresent()
                     .find(By.xpath("//div[@id=\"rhs_block\"]//a[contains(@href,\"wikipedia.org\")]"))
-                    .click();
+                    .getAttribute("href");
         }else{
-            find(By.xpath("//g-flippy-carousel//a[contains(@href,\"wikipedia.org\")]"))
+            link = find(By.xpath("//g-flippy-carousel//a[contains(@href,\"wikipedia.org\")]"))
                     .withTimeoutOf(10,ChronoUnit.SECONDS)
-                    .click();
+                    . getAttribute("href");
         }
+        return link;
+    }
+    public String getPokemonDbUrl(){
+        String link = "";
+        if(!driverProperties.isMobile()){
+            link = featuredBlock
+                    .withTimeoutOf(10, ChronoUnit.SECONDS)
+                    .waitUntilPresent()
+                    .find(By.xpath("//div[@class=\"r\"]//a[contains(@href,\"pokemondb.net\")]"))
+                    .getAttribute("href");
+        }else{
+            return "lalala";
+        }
+        return link;
     }
 
     public void typeSearchOnGoogle(String query){

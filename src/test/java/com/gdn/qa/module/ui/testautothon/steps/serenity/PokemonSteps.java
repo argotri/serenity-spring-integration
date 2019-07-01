@@ -33,7 +33,7 @@ public class PokemonSteps extends ScenarioSteps {
     }
     @Step("User go to wikipedia page")
     public void gotoWikipediaPageFromGoogle(){
-        googlePages.clickWikipediaLinkOnFeature();
+        googlePages.getWikipediaUrl();
     }
 
     @Step("User get data pokemon from wikipedia page")

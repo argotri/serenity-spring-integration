@@ -17,5 +17,5 @@ import java.util.HashMap;
 public class PokemonData extends ScenarioSteps {
     private HashMap<String , PokemonModel> wikipediaDatas;
     private HashMap<String , PokemonModel> pokemonDbUiDatas;
-
+    private HashMap<String , PokemonModel> pokeApiDatas;
 }

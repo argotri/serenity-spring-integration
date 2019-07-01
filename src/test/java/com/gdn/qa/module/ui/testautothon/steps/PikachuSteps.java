@@ -58,4 +58,20 @@ public class PikachuSteps {
     public void pokemonNumberShouldBeSameBetweenWikipediaAndPokemonDb() {
         System.out.println(pokemonData.getWikipediaDatas().toString());
     }
+
+    @Given("^open a browser$")
+    public void openABrowser() {
+        System.out.println("Pokemon Data" + pokemonData.getWikipediaDatas());
+        System.out.println("Pokemon Data" + pokemonData.getPokemonDbUiDatas());
+
+    }
+
+    @When("^user collect pokemon data from wikipedia , PokemonDB and PokeAPI$")
+    public void userCollectPokemonDataFromWikipediaPokemonDBAndPokeAPI() {
+        
+    }
+
+    @Then("^the data should be same$")
+    public void theDataShouldBeSame() {
+    }
 }
