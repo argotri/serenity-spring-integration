@@ -5,6 +5,7 @@ import com.gdn.qa.module.ui.testautothon.annotation.BlibliSteps;
 import com.gdn.qa.module.ui.testautothon.data.PokemonData;
 import com.gdn.qa.module.ui.testautothon.model.PokemonModel;
 import com.gdn.qa.module.ui.testautothon.steps.serenity.PokemonSteps;
+import com.gdn.qa.module.ui.testautothon.utils.ThreadRunner;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -30,7 +31,10 @@ public class PikachuSteps {
     @Autowired
     private PokemonData pokemonData;
 
-    @Given("^User on Google homepage$")
+    @Autowired
+    ThreadRunner threadRunner;
+
+  /*  @Given("^User on Google homepage$")
     public void userOnGoogleHomepage() {
         pokemonSteps.userOpenGoogleHomePage();
     }
@@ -57,7 +61,7 @@ public class PikachuSteps {
     @Then("^pokemon number should be same between wikipedia and pokemon db$")
     public void pokemonNumberShouldBeSameBetweenWikipediaAndPokemonDb() {
         System.out.println(pokemonData.getWikipediaDatas().toString());
-    }
+    }*/
 
     @Given("^open a browser$")
     public void openABrowser() {
@@ -68,7 +72,10 @@ public class PikachuSteps {
 
     @When("^user collect pokemon data from wikipedia , PokemonDB and PokeAPI$")
     public void userCollectPokemonDataFromWikipediaPokemonDBAndPokeAPI() {
-        
+        pokemonData.getWikipediaDatas().forEach((s, pokemonModel) -> {
+            threadRunner.setData(s,pokemonModel);
+            threadRunner.run();
+        });
     }
 
     @Then("^the data should be same$")

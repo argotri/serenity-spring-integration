@@ -14,7 +14,7 @@ import java.util.HashMap;
  */
 @Component
 @Data
-public class PokemonData extends ScenarioSteps {
+public class PokemonData{
     private HashMap<String , PokemonModel> wikipediaDatas;
     private HashMap<String , PokemonModel> pokemonDbUiDatas;
     private HashMap<String , PokemonModel> pokeApiDatas;
