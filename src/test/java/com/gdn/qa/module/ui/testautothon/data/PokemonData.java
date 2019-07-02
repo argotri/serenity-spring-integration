@@ -6,6 +6,7 @@ import net.thucydides.core.steps.ScenarioSteps;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * User: argo.triwidodo
@@ -15,7 +16,7 @@ import java.util.HashMap;
 @Component
 @Data
 public class PokemonData{
-    private HashMap<String , PokemonModel> wikipediaDatas;
-    private HashMap<String , PokemonModel> pokemonDbUiDatas;
-    private HashMap<String , PokemonModel> pokeApiDatas;
+    private List<PokemonModel> wikipediaDatas;
+    private List<PokemonModel> pokemonDbUiDatas;
+    private List<PokemonModel> pokeApiDatas;
 }

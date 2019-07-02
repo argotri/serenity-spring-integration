@@ -26,15 +26,15 @@ public class Hooks {
 
     @Before
     public void populateDataPokemon() throws IOException {
-        HashMap<String , PokemonModel> wikipediaModels = new HashMap<>();
-        HashMap<String , PokemonModel> pokemonDbModels = new HashMap<>();
+        List<PokemonModel> wikipediaModels = new ArrayList<>();
+        List<PokemonModel> pokemonDbModels = new ArrayList<>();
         List<String> pokemonNames = readData();
         googlePages.open();
         pokemonNames.forEach(s -> {
             googlePages.typeSearchOnGoogle(s);
-            wikipediaModels.put(s.toLowerCase(), PokemonModel.builder().url(googlePages.getWikipediaUrl()).build());
+            wikipediaModels.add(PokemonModel.builder().pokemonName(s.toLowerCase()).url(googlePages.getWikipediaUrl()).build());
             googlePages.typeSearchOnGoogle(s +" PokemonDB");
-            pokemonDbModels.put(s, PokemonModel.builder().url(googlePages.getPokemonDbUrl()).build());
+            pokemonDbModels.add(PokemonModel.builder().pokemonName(s.toLowerCase()).url(googlePages.getPokemonDbUrl()).build());
         });
         googlePages.getDriver().close();
         pokemonData.setWikipediaDatas(wikipediaModels);

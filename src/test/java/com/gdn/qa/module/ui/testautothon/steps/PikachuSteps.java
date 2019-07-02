@@ -1,20 +1,23 @@
 package com.gdn.qa.module.ui.testautothon.steps;
 
-import com.gdn.qa.module.ui.testautothon.AppConfig;
 import com.gdn.qa.module.ui.testautothon.annotation.BlibliSteps;
 import com.gdn.qa.module.ui.testautothon.data.PokemonData;
-import com.gdn.qa.module.ui.testautothon.model.PokemonModel;
+import com.gdn.qa.module.ui.testautothon.runnerAutomation.PokemonRunner;
 import com.gdn.qa.module.ui.testautothon.steps.serenity.PokemonSteps;
-import com.gdn.qa.module.ui.testautothon.utils.ThreadRunner;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import net.thucydides.core.annotations.Steps;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 /**
  * User: argo.triwidodo
@@ -69,16 +72,43 @@ public class PikachuSteps {
     }
 
     @When("^user collect pokemon data from wikipedia , PokemonDB and PokeAPI$")
-    public void userCollectPokemonDataFromWikipediaPokemonDBAndPokeAPI() {
-        pokemonData.getWikipediaDatas().forEach((s, pokemonModel) -> {
-            ThreadRunner thread = new ThreadRunner(s, pokemonModel, pokemonSteps.getDriver());
-            thread.start();
+    public void userCollectPokemonDataFromWikipediaPokemonDBAndPokeAPI() throws InterruptedException {
+        List<PokemonRunner> pokemonRunners = new ArrayList<>();
+        pokemonData.getWikipediaDatas().forEach((pokemonModel) -> {
+            pokemonRunners.add(PokemonRunner.builder().pokemonModel(pokemonModel).webDriver(pokemonSteps.getDriver()).build());
+        });
+        ExecutorService executorService = Executors.newFixedThreadPool(pokemonRunners.size());
+        List<Future<String>> result = executorService.invokeAll(pokemonRunners);
+        AtomicBoolean isFailed = new AtomicBoolean(false);
+        List<String> resultTest = new ArrayList<>();
+        result.stream().forEach(tr -> {
             try {
-                Thread.sleep(1000);
+                if (tr.isDone()) {
+                    resultTest.add(tr.get());
+                }
             } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
                 e.printStackTrace();
             }
         });
+        List<Boolean> done = result.stream().map(Future::isDone).collect(Collectors.toList());
+
+
+        while (true) {
+            if (!executorService.isShutdown()) {
+                int size = done.stream()
+                        .filter(aBoolean -> aBoolean.equals(true))
+                        .collect(Collectors.toList())
+                        .size();
+                if (size == done.size()) {
+                    System.out.println("Stopping executor service...");
+                    executorService.shutdownNow();
+                    break;
+                }
+            }
+        }
+        System.out.println("Hasil Pokemon Number " + resultTest);
     }
 
     @Then("^the data should be same$")

@@ -24,7 +24,7 @@ public class ThreadRunner implements Runnable {
     @Override
     public void run() {
         System.out.println("Tread Name " + name);
-        new WikipediaSteps().getDataFromWikipedia(name , pokemonModel,webDriver);
+        new WikipediaSteps().getDataFromWikipedia(pokemonModel,webDriver);
     }
 
     public void start(){
