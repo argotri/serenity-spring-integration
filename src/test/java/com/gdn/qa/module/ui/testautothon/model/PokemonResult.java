@@ -16,4 +16,6 @@ public class PokemonResult {
     private PokemonModel dataWikipedia;
     private PokemonModel dataPokemonDb;
     private PokemonModel dataPokeApi;
+    private PokemonAssertions wikiVsPokemonDb;
+    private PokemonAssertions pokemonDbVsPokeApi;
 }

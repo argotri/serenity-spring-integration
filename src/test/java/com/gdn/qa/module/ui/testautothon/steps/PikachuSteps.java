@@ -1,5 +1,7 @@
 package com.gdn.qa.module.ui.testautothon.steps;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gdn.qa.module.ui.testautothon.annotation.BlibliSteps;
 import com.gdn.qa.module.ui.testautothon.data.PokemonData;
 import com.gdn.qa.module.ui.testautothon.model.PokemonResult;
@@ -11,6 +13,9 @@ import cucumber.api.java.en.When;
 import net.thucydides.core.annotations.Steps;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -19,6 +24,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
+
+import static com.gdn.qa.module.ui.testautothon.utils.AssertionsUtil.comparePokemonDbVsPokeAPI;
+import static com.gdn.qa.module.ui.testautothon.utils.AssertionsUtil.compareWikipediaVsPokemonDb;
+import static com.gdn.qa.module.ui.testautothon.utils.Constant.*;
 
 /**
  * User: argo.triwidodo
@@ -34,6 +43,7 @@ public class PikachuSteps {
 
     @Autowired
     private PokemonData pokemonData;
+
 
 
   /*  @Given("^User on Google homepage$")
@@ -69,7 +79,12 @@ public class PikachuSteps {
     public void openABrowser() {
 //        System.out.println("Pokemon Data" + pokemonData.getWikipediaDatas());
 //        System.out.println("Pokemon Data" + pokemonData.getPokemonDbUiDatas());
-
+        File file = new File("report", "<directory>/target<file>");
+        file.mkdir();
+        File fileWikipedia = new File(WIKIPEDIA_FOLDER, "<directory>/target/report<file>");
+        fileWikipedia.mkdir();
+        File pokemonDb = new File(POKEMONDB_FOLDER, "<directory>/target/report<file>");
+        pokemonDb.mkdir();
     }
 
     @When("^user collect pokemon data from wikipedia , PokemonDB and PokeAPI$")
@@ -113,19 +128,29 @@ public class PikachuSteps {
         System.out.println("Hasil Pokemon Number " + resultTest.toString());
     }
 
-    @Then("^the data between wikipedia and pokemonDB is same$")
+    @Then("^the data between wikipedia and pokemonDB should be same$")
     public void dataWikiAndPokeDBisSame() {
-
+        pokemonData.getPokemonResults().forEach(pokemonResult -> {
+            pokemonResult.setWikiVsPokemonDb(compareWikipediaVsPokemonDb(pokemonResult));
+        });
     }
 
-    @Then("^the data between PokemonDB and pokeApi same$")
+    @Then("^the data between PokemonDB and pokeApi should be same$")
     public void dataPokeDBAndPokeAPIShouldBeSame() {
-
+        pokemonData.getPokemonResults().forEach(pokemonResult -> {
+            pokemonResult.setPokemonDbVsPokeApi(comparePokemonDbVsPokeAPI(pokemonResult));
+        });
+        System.out.println("Result " + pokemonData);
     }
 
     @Then("^Generate Rerport$")
-    public void generateReport() {
-
+    public void generateReport() throws IOException {
+        // Write data to js data
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonString = objectMapper.writeValueAsString(pokemonData);
+        jsonString = "var data = " + jsonString + ";";
+        FileWriter fw=new FileWriter(System.getProperty("user.dir") + PATH_REPORT +"/data.js");
+        fw.write(jsonString);
+        fw.close();
     }
-
 }

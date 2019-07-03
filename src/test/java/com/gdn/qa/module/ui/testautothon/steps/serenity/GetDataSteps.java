@@ -7,16 +7,22 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.gdn.qa.module.ui.testautothon.utils.Constant.*;
 import static com.gdn.qa.module.ui.testautothon.utils.WebDriverCreator.createNewSession;
 import static io.restassured.RestAssured.get;
 
@@ -42,8 +48,14 @@ public class GetDataSteps extends ScenarioSteps {
 
     @Step("Get Data From Wikipedia")
     private PokemonModel getDataFromWikipedia(PokemonModel pokemonModel, WebDriver webdriver) {
-        System.out.println("Pokemon Model in steps " + pokemonModel);
         webdriver.get(pokemonModel.getUrl());
+        webdriver.manage().window().maximize();
+        File src= ((TakesScreenshot)webdriver).getScreenshotAs(OutputType.FILE);
+        try {
+            FileUtils.copyFile(src,new File(System.getProperty("user.dir")  + PATH_REPORT + "/"+WIKIPEDIA_FOLDER + "/"+pokemonModel.getPokemonName().toLowerCase()+".png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         WebDriverWait wait = new WebDriverWait(webdriver, 10);
         pokemonModel.setNationalNumber(wait.until(ExpectedConditions.visibilityOf(webdriver.findElement(By.xpath("//table[@class='infobox']//th//table//tbody//tr//center//b")))).getText());
         pokemonModel.setImageUrl(wait.until(ExpectedConditions.visibilityOf(webdriver.findElement(By.xpath("//div[@class='floatnone']//a[@class='image']/img")))).getAttribute("src"));
@@ -64,7 +76,14 @@ public class GetDataSteps extends ScenarioSteps {
 
     @Step("Get Data From PokemonDb")
     private PokemonModel getDataFromPokemonDb(PokemonModel pokemonModel, WebDriver webdriver) {
-        System.out.println("Pokemon Model in steps " + pokemonModel);
+        webdriver.get(pokemonModel.getUrl());
+        webdriver.manage().window().maximize();
+        File src= ((TakesScreenshot)webdriver).getScreenshotAs(OutputType.FILE);
+        try {
+            FileUtils.copyFile(src,new File(System.getProperty("user.dir")  + PATH_REPORT + "/"+POKEMONDB_FOLDER + "/"+pokemonModel.getPokemonName().toLowerCase()+".png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         webdriver.get(pokemonModel.getUrl());
         WebDriverWait wait = new WebDriverWait(webdriver, 10);
         pokemonModel.setNationalNumber(wait.until(ExpectedConditions.visibilityOf(webdriver.findElement(By.xpath("//table[@class='vitals-table']//th[contains(text(),'National №')]//ancestor::tr/td")))).getText());

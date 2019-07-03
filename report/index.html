@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Report PokemonAutomation</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+</head>
+<body>
+    <div class="container">
+        Test Type : <span id="testType"></span>
+        <div class="data-pokemon">
+
+        </div>
+        <div id="pokemonDetail" class="col-lg-12">
+            <div>
+                <div id="pokemonName">${pokemonName}</div>
+                <table  class="table table-dark table-striped">
+                    <thead>
+                        <th scope="col"></th>
+                        <th scope="col">Wikipedia</th>
+                        <th scope="col">PokemonDB</th>
+                        <th scope="col">PokeAPI</th>
+                        <th scope="col">WIki VS PokemonDB</th>
+                        <th scope="col">PokemonDB vs PokemonAPI</th>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td scope="row">Number</td>
+                        <td>${wikipedia.number}</td>
+                        <td>${pokemondb.number}</td>
+                        <td>${pokeapi.number}</td>
+                        <td>${number.wikivspokemondb}</td>
+                        <td>${number.pokemondbvspokemonapi}</td>
+                    </tr>
+                    <tr>
+                        <td scope="row">Height (m)</td>
+                        <td>${wikipedia.height}</td>
+                        <td>${pokemondb.height}</td>
+                        <td>${pokeapi.height}</td>
+                        <td>${height.wikivspokemondb}</td>
+                        <td>${height.pokemondbvspokemonapi}</td>
+                    </tr>
+                    <tr>
+                        <td scope="row">Weight (kg)</td>
+                        <td>${wikipedia.weight}</td>
+                        <td>${pokemondb.weight}</td>
+                        <td>${pokeapi.weight}</td>
+                        <td>${weight.wikivspokemondb}</td>
+                        <td>${weight.pokemondbvspokemonapi}</td>
+                    </tr>
+                    <tr>
+                        <td scope="row">Type</td>
+                        <td>${wikipedia.type}</td>
+                        <td>${pokemondb.type}</td>
+                        <td>${pokeapi.type}</td>
+                        <td>${type.wikivspokemondb}</td>
+                        <td>${type.pokemondbvspokemonapi}</td>
+                    </tr>
+                    <tr>
+                        <td scope="row">HP</td>
+                        <td>${wikipedia.hp}</td>
+                        <td>${pokemondb.hp}</td>
+                        <td>${pokeapi.hp}</td>
+                        <td>${hp.wikivspokemondb}</td>
+                        <td>${hp.pokemondbvspokemonapi}</td>
+                    </tr>
+                    <tr>
+                        <td>Pokemon Image</td>
+                        <td><img src="${wikipedia.image}"></td>
+                        <td><img src="${pokemondb.image}"></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Screenshoot</td>
+                        <td><img src="wikipediaReports/${pokemonName}.png"></td>
+                        <td><img src="pokemonDbReports/${pokemonName}.png"></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script type="text/javascript" src="data.js"></script>
+<script type="text/javascript" src="logic.js"></script>
+</html>
