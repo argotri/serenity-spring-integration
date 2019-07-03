@@ -3,6 +3,7 @@ package com.gdn.qa.module.ui.testautothon.hooks;
 import com.gdn.qa.module.ui.testautothon.annotation.BlibliSteps;
 import com.gdn.qa.module.ui.testautothon.data.PokemonData;
 import com.gdn.qa.module.ui.testautothon.model.PokemonModel;
+import com.gdn.qa.module.ui.testautothon.model.PokemonResult;
 import com.gdn.qa.module.ui.testautothon.pages.GooglePages;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -26,19 +27,26 @@ public class Hooks {
 
     @Before
     public void populateDataPokemon() throws IOException {
-        List<PokemonModel> wikipediaModels = new ArrayList<>();
-        List<PokemonModel> pokemonDbModels = new ArrayList<>();
+        List<PokemonResult> pokemonResults = new ArrayList<>();
+//        List<PokemonModel> wikipediaModels = new ArrayList<>();
+//        List<PokemonModel> pokemonDbModels = new ArrayList<>();
         List<String> pokemonNames = readData();
         googlePages.open();
         pokemonNames.forEach(s -> {
             googlePages.typeSearchOnGoogle(s);
-            wikipediaModels.add(PokemonModel.builder().pokemonName(s.toLowerCase()).url(googlePages.getWikipediaUrl()).build());
+            PokemonModel dataWiki = PokemonModel.builder().pokemonName(s.toLowerCase()).url(googlePages.getWikipediaUrl()).build();
             googlePages.typeSearchOnGoogle(s +" PokemonDB");
-            pokemonDbModels.add(PokemonModel.builder().pokemonName(s.toLowerCase()).url(googlePages.getPokemonDbUrl()).build());
+            PokemonModel dataPokemonDb = PokemonModel.builder().pokemonName(s.toLowerCase()).url(googlePages.getPokemonDbUrl()).build();
+            pokemonResults.add(
+                    PokemonResult.builder()
+                            .dataWikipedia(dataWiki)
+                            .dataPokemonDb(dataPokemonDb)
+                            .name(s.toLowerCase())
+                            .build()
+            );
         });
+        pokemonData.setPokemonResults(pokemonResults);
         googlePages.getDriver().close();
-        pokemonData.setWikipediaDatas(wikipediaModels);
-        pokemonData.setPokemonDbUiDatas(pokemonDbModels);
     }
 
     @After

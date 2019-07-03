@@ -1,6 +1,7 @@
 package com.gdn.qa.module.ui.testautothon.data;
 
 import com.gdn.qa.module.ui.testautothon.model.PokemonModel;
+import com.gdn.qa.module.ui.testautothon.model.PokemonResult;
 import lombok.Data;
 import net.thucydides.core.steps.ScenarioSteps;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,5 @@ import java.util.List;
 @Component
 @Data
 public class PokemonData{
-    private List<PokemonModel> wikipediaDatas;
-    private List<PokemonModel> pokemonDbUiDatas;
-    private List<PokemonModel> pokeApiDatas;
+    private List<PokemonResult> pokemonResults;
 }

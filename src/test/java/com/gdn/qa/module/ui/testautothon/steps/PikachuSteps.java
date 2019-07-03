@@ -2,6 +2,7 @@ package com.gdn.qa.module.ui.testautothon.steps;
 
 import com.gdn.qa.module.ui.testautothon.annotation.BlibliSteps;
 import com.gdn.qa.module.ui.testautothon.data.PokemonData;
+import com.gdn.qa.module.ui.testautothon.model.PokemonResult;
 import com.gdn.qa.module.ui.testautothon.runnerAutomation.PokemonRunner;
 import com.gdn.qa.module.ui.testautothon.steps.serenity.PokemonSteps;
 import cucumber.api.java.en.Given;
@@ -66,21 +67,23 @@ public class PikachuSteps {
 
     @Given("^open a browser$")
     public void openABrowser() {
-        System.out.println("Pokemon Data" + pokemonData.getWikipediaDatas());
-        System.out.println("Pokemon Data" + pokemonData.getPokemonDbUiDatas());
+//        System.out.println("Pokemon Data" + pokemonData.getWikipediaDatas());
+//        System.out.println("Pokemon Data" + pokemonData.getPokemonDbUiDatas());
 
     }
 
     @When("^user collect pokemon data from wikipedia , PokemonDB and PokeAPI$")
     public void userCollectPokemonDataFromWikipediaPokemonDBAndPokeAPI() throws InterruptedException {
         List<PokemonRunner> pokemonRunners = new ArrayList<>();
-        pokemonData.getWikipediaDatas().forEach((pokemonModel) -> {
-            pokemonRunners.add(PokemonRunner.builder().pokemonModel(pokemonModel).webDriver(pokemonSteps.getDriver()).build());
+        pokemonData.getPokemonResults().forEach((pokemonResult) -> {
+            pokemonRunners.add(PokemonRunner.builder()
+                    .pokemonResult(pokemonResult).webDriver(pokemonSteps.getDriver())
+                    .build());
         });
         ExecutorService executorService = Executors.newFixedThreadPool(pokemonRunners.size());
-        List<Future<String>> result = executorService.invokeAll(pokemonRunners);
+        List<Future<PokemonResult>> result = executorService.invokeAll(pokemonRunners);
         AtomicBoolean isFailed = new AtomicBoolean(false);
-        List<String> resultTest = new ArrayList<>();
+        List<PokemonResult> resultTest = new ArrayList<>();
         result.stream().forEach(tr -> {
             try {
                 if (tr.isDone()) {
@@ -93,7 +96,6 @@ public class PikachuSteps {
             }
         });
         List<Boolean> done = result.stream().map(Future::isDone).collect(Collectors.toList());
-
 
         while (true) {
             if (!executorService.isShutdown()) {
@@ -108,7 +110,7 @@ public class PikachuSteps {
                 }
             }
         }
-        System.out.println("Hasil Pokemon Number " + resultTest);
+        System.out.println("Hasil Pokemon Number " + resultTest.toString());
     }
 
     @Then("^the data should be same$")

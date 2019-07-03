@@ -1,7 +1,8 @@
 package com.gdn.qa.module.ui.testautothon.runnerAutomation;
 
+import com.gdn.qa.module.ui.testautothon.model.PokemonResult;
 import com.gdn.qa.module.ui.testautothon.model.PokemonModel;
-import com.gdn.qa.module.ui.testautothon.steps.serenity.WikipediaSteps;
+import com.gdn.qa.module.ui.testautothon.steps.serenity.GetDataSteps;
 import lombok.Builder;
 import lombok.Data;
 import org.openqa.selenium.WebDriver;
@@ -16,17 +17,16 @@ import java.util.concurrent.Callable;
 
 @Data
 @Builder
-public class PokemonRunner implements Callable<String> {
+public class PokemonRunner implements Callable<PokemonResult> {
 
-    private PokemonModel pokemonModel;
+    private PokemonResult pokemonResult;
     private WebDriver webDriver;
 
     @Override
-    public String call() throws Exception {
-        WikipediaSteps wikipediaSteps = new WikipediaSteps();
-        System.out.println("Test lalala " + pokemonModel.toString());
-        Thread.sleep(10000);
-        return wikipediaSteps.getDataFromWikipedia(pokemonModel,webDriver);
+    public PokemonResult call() throws Exception {
+        GetDataSteps getDataSteps = new GetDataSteps();
+        System.out.println("Test lalala " + pokemonResult.toString());
+        return getDataSteps.getData(pokemonResult,webDriver);
     }
 
 }
