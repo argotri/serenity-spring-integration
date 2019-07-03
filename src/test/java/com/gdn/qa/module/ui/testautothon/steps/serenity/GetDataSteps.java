@@ -3,6 +3,8 @@ package com.gdn.qa.module.ui.testautothon.steps.serenity;
 import com.gdn.qa.module.ui.testautothon.annotation.BlibliSteps;
 import com.gdn.qa.module.ui.testautothon.model.PokemonModel;
 import com.gdn.qa.module.ui.testautothon.model.PokemonResult;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
 import org.openqa.selenium.By;
@@ -11,8 +13,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.gdn.qa.module.ui.testautothon.utils.WebDriverCreator.createNewSession;
+import static io.restassured.RestAssured.get;
 
 
 @BlibliSteps
@@ -25,7 +31,11 @@ public class GetDataSteps extends ScenarioSteps {
         pokemonResult.
                 setDataWikipedia(getDataFromWikipedia(pokemonResult.getDataWikipedia(), webDriver));
         pokemonResult.setDataPokemonDb(getDataFromPokemonDb(pokemonResult.getDataPokemonDb(), webDriver));
-        System.out.println("Hasil Result " + pokemonResult);
+        try {
+            pokemonResult.setDataPokeApi(getDataFromPokemonApi(pokemonResult.getName()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         webDriver.close();
         return pokemonResult;
     }
@@ -75,7 +85,21 @@ public class GetDataSteps extends ScenarioSteps {
     }
 
     @Step("Get Dta from PokemonAPI")
-    private PokemonModel getDataFromPokemonApi() {
-        given()
+    private PokemonModel getDataFromPokemonApi(String pokemonName) throws Exception {
+        PokemonModel pokemonModel = PokemonModel.builder().build();
+        pokemonModel.setPokemonName(pokemonName);
+        pokemonModel.setUrl("https://pokeapi.co/api/v2/pokemon/" + pokemonName);
+        Response response = get(pokemonModel.getUrl());
+        if(response.statusCode()==200){
+            JsonPath jsonPath = new JsonPath(response.asString());
+            pokemonModel.setHp((Integer) ((List<HashMap<String,Object>>)jsonPath.get("stats.findAll {stats -> stats.stat.name == 'hp'}")).get(0).get("base_stat"));
+            pokemonModel.setNationalNumber(Integer.toString(jsonPath.get("id")));
+            List<HashMap<String,Object>> types =jsonPath.getList("types");
+            List<String> typesInString = types.stream().map(s -> ((HashMap<String,String>)s.get("type")).get("name")).collect(Collectors.toList());
+            pokemonModel.setPokemonTypes(typesInString);
+            pokemonModel.setHeightInMeter(jsonPath.getFloat("height")/10);
+            pokemonModel.setWeightInKg(jsonPath.getFloat("weight")/10);
+        }
+        return pokemonModel;
     }
 }

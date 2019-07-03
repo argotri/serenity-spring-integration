@@ -113,7 +113,19 @@ public class PikachuSteps {
         System.out.println("Hasil Pokemon Number " + resultTest.toString());
     }
 
-    @Then("^the data should be same$")
-    public void theDataShouldBeSame() {
+    @Then("^the data between wikipedia and pokemonDB is same$")
+    public void dataWikiAndPokeDBisSame() {
+
     }
+
+    @Then("^the data between PokemonDB and pokeApi same$")
+    public void dataPokeDBAndPokeAPIShouldBeSame() {
+
+    }
+
+    @Then("^Generate Rerport$")
+    public void generateReport() {
+
+    }
+
 }
