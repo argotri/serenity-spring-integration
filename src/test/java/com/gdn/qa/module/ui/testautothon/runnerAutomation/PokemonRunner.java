@@ -25,7 +25,6 @@ public class PokemonRunner implements Callable<PokemonResult> {
     @Override
     public PokemonResult call() throws Exception {
         GetDataSteps getDataSteps = new GetDataSteps();
-        System.out.println("Test lalala " + pokemonResult.toString());
         return getDataSteps.getData(pokemonResult,webDriver);
     }
 

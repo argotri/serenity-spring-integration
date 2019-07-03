@@ -74,52 +74,56 @@ var template = "<div class='col-lg-12'>\n" +
 
 var finializing = "";
 data.pokemonResults.forEach(function (result) {
-    var temp = template;
-    // render pokemon name
-    console.log(result)
-    temp = temp.replace("${pokemonName}",result.name)
-    // Number
-    temp = temp.replace("${wikipedia.number}",result.dataWikipedia.nationalNumber)
-    temp = temp.replace("${pokemondb.number}",result.dataPokemonDb.nationalNumber)
-    temp = temp.replace("${pokeapi.number}",result.dataPokeApi.nationalNumber)
-    temp = temp.replace("${number.wikivspokemondb}",renderTrueFalse(result.wikiVsPokemonDb.nationalNumber))
-    temp = temp.replace("${number.pokemondbvspokemonapi}",renderTrueFalse(result.pokemonDbVsPokeApi.nationalNumber))
 
-    //height
-    temp = temp.replace("${wikipedia.height}",result.dataWikipedia.heightInMeter)
-    temp = temp.replace("${pokemondb.height}",result.dataPokemonDb.heightInMeter)
-    temp = temp.replace("${pokeapi.height}",result.dataPokeApi.heightInMeter)
-    temp = temp.replace("${height.wikivspokemondb}",renderTrueFalse(result.wikiVsPokemonDb.height))
-    temp = temp.replace("${height.pokemondbvspokemonapi}",renderTrueFalse(result.pokemonDbVsPokeApi.height))
 
-    //Weight
-    temp = temp.replace("${wikipedia.weight}",result.dataWikipedia.weightInKg)
-    temp = temp.replace("${pokemondb.weight}",result.dataPokemonDb.weightInKg)
-    temp = temp.replace("${pokeapi.weight}",result.dataPokeApi.weightInKg)
-    temp = temp.replace("${weight.wikivspokemondb}",renderTrueFalse(result.wikiVsPokemonDb.weight))
-    temp = temp.replace("${weight.pokemondbvspokemonapi}",renderTrueFalse(result.pokemonDbVsPokeApi.weight))
+    if(result.dataPokemonDb != null){
+        // Number
+        var temp = template;
+        temp = temp.replace("${pokemonName}",result.name)
+        temp = temp.replace("${wikipedia.number}",result.dataWikipedia.nationalNumber)
+        temp = temp.replace("${pokemondb.number}",result.dataPokemonDb.nationalNumber)
+        temp = temp.replace("${pokeapi.number}",result.dataPokeApi.nationalNumber)
+        temp = temp.replace("${number.wikivspokemondb}",renderTrueFalse(result.wikiVsPokemonDb.nationalNumber))
+        temp = temp.replace("${number.pokemondbvspokemonapi}",renderTrueFalse(result.pokemonDbVsPokeApi.nationalNumber))
 
-    //type
-    temp = temp.replace("${wikipedia.type}",result.dataWikipedia.pokemonTypes)
-    temp = temp.replace("${pokemondb.type}",result.dataPokemonDb.pokemonTypes)
-    temp = temp.replace("${pokeapi.type}",result.dataPokeApi.pokemonTypes)
-    temp = temp.replace("${type.wikivspokemondb}",renderTrueFalse(result.wikiVsPokemonDb.type))
-    temp = temp.replace("${type.pokemondbvspokemonapi}",renderTrueFalse(result.pokemonDbVsPokeApi.type))
+        //height
+        temp = temp.replace("${wikipedia.height}",result.dataWikipedia.heightInMeter)
+        temp = temp.replace("${pokemondb.height}",result.dataPokemonDb.heightInMeter)
+        temp = temp.replace("${pokeapi.height}",result.dataPokeApi.heightInMeter)
+        temp = temp.replace("${height.wikivspokemondb}",renderTrueFalse(result.wikiVsPokemonDb.height))
+        temp = temp.replace("${height.pokemondbvspokemonapi}",renderTrueFalse(result.pokemonDbVsPokeApi.height))
 
-    //HP
-    temp = temp.replace("${wikipedia.hp}",result.dataWikipedia.hp)
-    temp = temp.replace("${pokemondb.hp}",result.dataPokemonDb.hp)
-    temp = temp.replace("${pokeapi.hp}",result.dataPokeApi.hp)
-    temp = temp.replace("${hp.pokemondbvspokemonapi}",renderTrueFalse(result.pokemonDbVsPokeApi.hp))
+        //Weight
+        temp = temp.replace("${wikipedia.weight}",result.dataWikipedia.weightInKg)
+        temp = temp.replace("${pokemondb.weight}",result.dataPokemonDb.weightInKg)
+        temp = temp.replace("${pokeapi.weight}",result.dataPokeApi.weightInKg)
+        temp = temp.replace("${weight.wikivspokemondb}",renderTrueFalse(result.wikiVsPokemonDb.weight))
+        temp = temp.replace("${weight.pokemondbvspokemonapi}",renderTrueFalse(result.pokemonDbVsPokeApi.weight))
 
-    // Image
-    temp = temp.replace("${wikipedia.image}",result.dataWikipedia.imageUrl)
-    temp = temp.replace("${pokemondb.image}",result.dataPokemonDb.imageUrl)
-    temp = temp.replace("${pokemonName}",result.name)
-    temp = temp.replace("${pokemonName}",result.name)
-    temp = temp.replace("${pokemonName}",result.name)
-    temp = temp.replace("${pokemonName}",result.name)
+        //type
+        temp = temp.replace("${wikipedia.type}",result.dataWikipedia.pokemonTypes)
+        temp = temp.replace("${pokemondb.type}",result.dataPokemonDb.pokemonTypes)
+        temp = temp.replace("${pokeapi.type}",result.dataPokeApi.pokemonTypes)
+        temp = temp.replace("${type.wikivspokemondb}",renderTrueFalse(result.wikiVsPokemonDb.type))
+        temp = temp.replace("${type.pokemondbvspokemonapi}",renderTrueFalse(result.pokemonDbVsPokeApi.type))
 
+        //HP
+        temp = temp.replace("${wikipedia.hp}",result.dataWikipedia.hp)
+        temp = temp.replace("${pokemondb.hp}",result.dataPokemonDb.hp)
+        temp = temp.replace("${pokeapi.hp}",result.dataPokeApi.hp)
+        temp = temp.replace("${hp.pokemondbvspokemonapi}",renderTrueFalse(result.pokemonDbVsPokeApi.hp))
+
+        // Image
+        temp = temp.replace("${wikipedia.image}",result.dataWikipedia.imageUrl)
+        temp = temp.replace("${pokemondb.image}",result.dataPokemonDb.imageUrl)
+        temp = temp.replace("${pokemonName}",result.name)
+        temp = temp.replace("${pokemonName}",result.name)
+        temp = temp.replace("${pokemonName}",result.name)
+        temp = temp.replace("${pokemonName}",result.name)
+    }
+    else{
+        temp = "<div class='alert alert-danger'>The pokemon name <b>"+result.name+"</b> is not found</div>"
+    }
 
     finializing+=temp
 })

@@ -11,8 +11,10 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import net.thucydides.core.annotations.Steps;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.print.attribute.IntegerSyntax;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -87,15 +89,16 @@ public class PikachuSteps {
         pokemonDb.mkdir();
     }
 
-    @When("^user collect pokemon data from wikipedia , PokemonDB and PokeAPI$")
-    public void userCollectPokemonDataFromWikipediaPokemonDBAndPokeAPI() throws InterruptedException {
+    @When("^user collect pokemon data from wikipedia , PokemonDB and PokeAPI with '(.*)' thread$")
+    public void userCollectPokemonDataFromWikipediaPokemonDBAndPokeAPI(Integer threadN) throws InterruptedException {
         List<PokemonRunner> pokemonRunners = new ArrayList<>();
         pokemonData.getPokemonResults().forEach((pokemonResult) -> {
             pokemonRunners.add(PokemonRunner.builder()
                     .pokemonResult(pokemonResult).webDriver(pokemonSteps.getDriver())
                     .build());
         });
-        ExecutorService executorService = Executors.newFixedThreadPool(pokemonRunners.size());
+        Integer thread = threadN.equals("UNLIMITED")?pokemonRunners.size(): Integer.valueOf(threadN);
+        ExecutorService executorService = Executors.newFixedThreadPool(thread);
         List<Future<PokemonResult>> result = executorService.invokeAll(pokemonRunners);
         AtomicBoolean isFailed = new AtomicBoolean(false);
         List<PokemonResult> resultTest = new ArrayList<>();
@@ -125,7 +128,6 @@ public class PikachuSteps {
                 }
             }
         }
-        System.out.println("Hasil Pokemon Number " + resultTest.toString());
     }
 
     @Then("^the data between wikipedia and pokemonDB should be same$")
@@ -140,10 +142,9 @@ public class PikachuSteps {
         pokemonData.getPokemonResults().forEach(pokemonResult -> {
             pokemonResult.setPokemonDbVsPokeApi(comparePokemonDbVsPokeAPI(pokemonResult));
         });
-        System.out.println("Result " + pokemonData);
     }
 
-    @Then("^Generate Rerport$")
+    @When("^Generate Report$")
     public void generateReport() throws IOException {
         // Write data to js data
         ObjectMapper objectMapper = new ObjectMapper();
@@ -152,5 +153,21 @@ public class PikachuSteps {
         FileWriter fw=new FileWriter(System.getProperty("user.dir") + PATH_REPORT +"/data.js");
         fw.write(jsonString);
         fw.close();
+        FileUtils.copyFile(new File(System.getProperty("user.dir") + File.separator+"report"+File.separator+"index.html"),new File(System.getProperty("user.dir")+ PATH_REPORT +File.separator+File.separator+ "index.html"));
+        FileUtils.copyFile(new File(System.getProperty("user.dir") + File.separator+"report"+File.separator+"logic.js"),new File(System.getProperty("user.dir")+ PATH_REPORT +  File.separator+File.separator+ "logic.js"));
     }
+
+    @Then("validate There are no error")
+    public void checkResult() throws Exception{
+        for(PokemonResult pokemonResult : pokemonData.getPokemonResults()){
+            try{
+                if(!pokemonResult.getPokemonDbVsPokeApi().getAllIsTrue() && pokemonResult.getWikiVsPokemonDb().getAllIsTrue()) {
+                    throw new Exception("Some data check is failed , please check the report");
+                }
+            }catch (Exception e){
+                throw new Exception("Some data check is failed , please check the report");
+            }
+        }
+    }
+
 }

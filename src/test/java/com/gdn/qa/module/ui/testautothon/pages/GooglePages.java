@@ -32,8 +32,7 @@ public class GooglePages extends PageObject {
     @FindBy(id = "rhs_block")
     private WebElementFacade featuredBlock;
 
-
-    public String getWikipediaUrl(){
+    public String getWikipediaUrl()throws Exception{
         String link = "";
         if(!driverProperties.isMobile()){
             link = featuredBlock
@@ -48,7 +47,7 @@ public class GooglePages extends PageObject {
         }
         return link;
     }
-    public String getPokemonDbUrl(){
+    public String getPokemonDbUrl() throws Exception{
         String link = "";
         if(!driverProperties.isMobile()){
             link = featuredBlock
@@ -57,7 +56,7 @@ public class GooglePages extends PageObject {
                     .find(By.xpath("//div[@class=\"r\"]//a[contains(@href,\"pokemondb.net\")]"))
                     .getAttribute("href");
         }else{
-            return "lalala";
+            return "";
         }
         return link;
     }
@@ -65,4 +64,5 @@ public class GooglePages extends PageObject {
     public void typeSearchOnGoogle(String query){
         txtSearchGoogle.typeAndEnter(query);
     }
+
 }

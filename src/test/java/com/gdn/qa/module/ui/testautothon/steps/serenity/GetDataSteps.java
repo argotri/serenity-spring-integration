@@ -34,10 +34,10 @@ public class GetDataSteps extends ScenarioSteps {
     @Step("Initiate Get data")
     public PokemonResult getData(PokemonResult pokemonResult, WebDriver webDriver) {
         webDriver = createNewSession(webDriver);
-        pokemonResult.
-                setDataWikipedia(getDataFromWikipedia(pokemonResult.getDataWikipedia(), webDriver));
-        pokemonResult.setDataPokemonDb(getDataFromPokemonDb(pokemonResult.getDataPokemonDb(), webDriver));
         try {
+            pokemonResult.
+                    setDataWikipedia(getDataFromWikipedia(pokemonResult.getDataWikipedia(), webDriver));
+            pokemonResult.setDataPokemonDb(getDataFromPokemonDb(pokemonResult.getDataPokemonDb(), webDriver));
             pokemonResult.setDataPokeApi(getDataFromPokemonApi(pokemonResult.getName()));
         } catch (Exception e) {
             e.printStackTrace();
@@ -47,7 +47,7 @@ public class GetDataSteps extends ScenarioSteps {
     }
 
     @Step("Get Data From Wikipedia")
-    private PokemonModel getDataFromWikipedia(PokemonModel pokemonModel, WebDriver webdriver) {
+    private PokemonModel getDataFromWikipedia(PokemonModel pokemonModel, WebDriver webdriver) throws Exception {
         webdriver.get(pokemonModel.getUrl());
         webdriver.manage().window().maximize();
         File src= ((TakesScreenshot)webdriver).getScreenshotAs(OutputType.FILE);
@@ -75,7 +75,7 @@ public class GetDataSteps extends ScenarioSteps {
     }
 
     @Step("Get Data From PokemonDb")
-    private PokemonModel getDataFromPokemonDb(PokemonModel pokemonModel, WebDriver webdriver) {
+    private PokemonModel getDataFromPokemonDb(PokemonModel pokemonModel, WebDriver webdriver)  throws Exception {
         webdriver.get(pokemonModel.getUrl());
         webdriver.manage().window().maximize();
         File src= ((TakesScreenshot)webdriver).getScreenshotAs(OutputType.FILE);

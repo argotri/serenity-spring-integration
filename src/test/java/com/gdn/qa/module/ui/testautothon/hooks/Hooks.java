@@ -34,9 +34,19 @@ public class Hooks {
         googlePages.open();
         pokemonNames.forEach(s -> {
             googlePages.typeSearchOnGoogle(s);
-            PokemonModel dataWiki = PokemonModel.builder().pokemonName(s.toLowerCase()).url(googlePages.getWikipediaUrl()).build();
+            PokemonModel dataWiki = null;
+            try {
+                dataWiki = PokemonModel.builder().pokemonName(s.toLowerCase()).url(googlePages.getWikipediaUrl()).build();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             googlePages.typeSearchOnGoogle(s +" PokemonDB");
-            PokemonModel dataPokemonDb = PokemonModel.builder().pokemonName(s.toLowerCase()).url(googlePages.getPokemonDbUrl()).build();
+            PokemonModel dataPokemonDb = null;
+            try {
+                dataPokemonDb = PokemonModel.builder().pokemonName(s.toLowerCase()).url(googlePages.getPokemonDbUrl()).build();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             pokemonResults.add(
                     PokemonResult.builder()
                             .dataWikipedia(dataWiki)

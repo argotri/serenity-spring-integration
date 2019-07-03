@@ -32,7 +32,7 @@ public class PokemonSteps extends ScenarioSteps {
         googlePages.typeSearchOnGoogle(keyword);
     }
     @Step("User go to wikipedia page")
-    public void gotoWikipediaPageFromGoogle(){
+    public void gotoWikipediaPageFromGoogle() throws Exception {
         googlePages.getWikipediaUrl();
     }
 
