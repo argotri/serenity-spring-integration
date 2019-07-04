@@ -1,6 +1,7 @@
 package com.gdn.qa.module.ui.testautothon.steps.serenity;
 
 import com.gdn.qa.module.ui.testautothon.annotation.BlibliSteps;
+import com.gdn.qa.module.ui.testautothon.configuration.DriverProperties;
 import com.gdn.qa.module.ui.testautothon.model.PokemonModel;
 import com.gdn.qa.module.ui.testautothon.model.PokemonResult;
 import io.restassured.path.json.JsonPath;
@@ -30,10 +31,12 @@ import static io.restassured.RestAssured.get;
 @BlibliSteps
 public class GetDataSteps extends ScenarioSteps {
     private PokemonResult pokemonResult;
+    private DriverProperties driverProperties;
 
     @Step("Initiate Get data")
     public PokemonResult getData(PokemonResult pokemonResult, WebDriver webDriver) {
         webDriver = createNewSession(webDriver);
+        driverProperties = new DriverProperties();
         try {
             pokemonResult.
                     setDataWikipedia(getDataFromWikipedia(pokemonResult.getDataWikipedia(), webDriver));
@@ -60,7 +63,11 @@ public class GetDataSteps extends ScenarioSteps {
         pokemonModel.setNationalNumber(wait.until(ExpectedConditions.visibilityOf(webdriver.findElement(By.xpath("//table[@class='infobox']//th//table//tbody//tr//center//b")))).getText());
         pokemonModel.setImageUrl(wait.until(ExpectedConditions.visibilityOf(webdriver.findElement(By.xpath("//div[@class='floatnone']//a[@class='image']/img")))).getAttribute("src"));
         // click tampilkan
-        wait.until(ExpectedConditions.visibilityOf(webdriver.findElement(By.xpath("//a[@id='collapseButton0']")))).click();
+        try{
+            wait.until(ExpectedConditions.visibilityOf(webdriver.findElement(By.xpath("//a[@id='collapseButton0']")))).click();
+        }catch (Exception e){
+
+        }
         pokemonModel.setNameInJapanese(webdriver.findElement(By.xpath("//th/a[contains(@title,\"Bahasa Jepang\")]/ancestor::tr[1]/td")).getText());
         // get weight
         String weightPure = webdriver.findElement(By.xpath("//th[contains(text(),'Berat')]/ancestor::tr[1]/td")).getText();

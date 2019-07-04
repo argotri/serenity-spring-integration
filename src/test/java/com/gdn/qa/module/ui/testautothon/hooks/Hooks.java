@@ -9,6 +9,7 @@ import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import lombok.extern.log4j.Log4j;
 import net.serenitybdd.core.pages.PageObject;
+import net.thucydides.core.util.SystemEnvironmentVariables;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.*;
@@ -27,6 +28,7 @@ public class Hooks {
 
     @Before
     public void populateDataPokemon() throws IOException {
+        pokemonData.setRunMode(SystemEnvironmentVariables.createEnvironmentVariables().getProperty("browser.type"));
         List<PokemonResult> pokemonResults = new ArrayList<>();
 //        List<PokemonModel> wikipediaModels = new ArrayList<>();
 //        List<PokemonModel> pokemonDbModels = new ArrayList<>();
@@ -56,6 +58,7 @@ public class Hooks {
             );
         });
         pokemonData.setPokemonResults(pokemonResults);
+        System.out.println("Pokemon Data " + pokemonData);
         googlePages.getDriver().close();
     }
 

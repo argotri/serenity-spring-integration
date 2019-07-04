@@ -74,8 +74,6 @@ var template = "<div class='col-lg-12'>\n" +
 
 var finializing = "";
 data.pokemonResults.forEach(function (result) {
-
-
     if(result.dataPokemonDb != null){
         // Number
         var temp = template;
@@ -129,6 +127,7 @@ data.pokemonResults.forEach(function (result) {
 })
 
 $("#pokemonDetail").html(finializing)
+$("#testType").html(data.runMode)
 // $.each(data.pokemonResults,function (presult) {
 //     console.log(presult)
 // })

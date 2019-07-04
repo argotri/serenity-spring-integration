@@ -17,5 +17,6 @@ import java.util.List;
 @Component
 @Data
 public class PokemonData{
+    private String runMode;
     private List<PokemonResult> pokemonResults;
 }

@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 @Component("com.gdn.qa.module.ui.testautothon.pages")
-@DefaultUrl("https://www.google.com/")
+@DefaultUrl("https://www.google.co.id/")
 public class GooglePages extends PageObject {
 
     @Autowired
@@ -41,7 +41,7 @@ public class GooglePages extends PageObject {
                     .find(By.xpath("//div[@id=\"rhs_block\"]//a[contains(@href,\"wikipedia.org\")]"))
                     .getAttribute("href");
         }else{
-            link = find(By.xpath("//g-flippy-carousel//a[contains(@href,\"wikipedia.org\")]"))
+            link = find(By.xpath("(//a[contains(@href,\"wikipedia.org\")])[1]"))
                     .withTimeoutOf(10,ChronoUnit.SECONDS)
                     . getAttribute("href");
         }
@@ -56,7 +56,9 @@ public class GooglePages extends PageObject {
                     .find(By.xpath("//div[@class=\"r\"]//a[contains(@href,\"pokemondb.net\")]"))
                     .getAttribute("href");
         }else{
-            return "";
+            link = find(By.xpath("(//a[contains(@data-amp-cur,\"https://pokemondb.net/pokedex/\")])[1]"))
+                            .withTimeoutOf(10,ChronoUnit.SECONDS)
+                    .getAttribute("data-amp-cur");
         }
         return link;
     }
