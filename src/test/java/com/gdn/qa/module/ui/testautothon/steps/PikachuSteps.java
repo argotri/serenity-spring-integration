@@ -90,14 +90,14 @@ public class PikachuSteps {
     }
 
     @When("^user collect pokemon data from wikipedia , PokemonDB and PokeAPI with '(.*)' thread$")
-    public void userCollectPokemonDataFromWikipediaPokemonDBAndPokeAPI(Integer threadN) throws InterruptedException {
+    public void userCollectPokemonDataFromWikipediaPokemonDBAndPokeAPI(String threadN) throws InterruptedException {
         List<PokemonRunner> pokemonRunners = new ArrayList<>();
         pokemonData.getPokemonResults().forEach((pokemonResult) -> {
             pokemonRunners.add(PokemonRunner.builder()
                     .pokemonResult(pokemonResult).webDriver(pokemonSteps.getDriver())
                     .build());
         });
-        Integer thread = threadN.equals("UNLIMITED")?pokemonRunners.size(): Integer.valueOf(threadN);
+        Integer thread = threadN.equalsIgnoreCase("UNLIMITED")?pokemonRunners.size(): Integer.valueOf(threadN);
         ExecutorService executorService = Executors.newFixedThreadPool(thread);
         List<Future<PokemonResult>> result = executorService.invokeAll(pokemonRunners);
         AtomicBoolean isFailed = new AtomicBoolean(false);
