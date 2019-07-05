@@ -52,7 +52,6 @@ public class GetDataSteps extends ScenarioSteps {
     @Step("Get Data From Wikipedia")
     private PokemonModel getDataFromWikipedia(PokemonModel pokemonModel, WebDriver webdriver) throws Exception {
         webdriver.get(pokemonModel.getUrl());
-        webdriver.manage().window().maximize();
         File src= ((TakesScreenshot)webdriver).getScreenshotAs(OutputType.FILE);
         try {
             FileUtils.copyFile(src,new File(System.getProperty("user.dir")  + PATH_REPORT + "/"+WIKIPEDIA_FOLDER + "/"+pokemonModel.getPokemonName().toLowerCase()+".png"));
@@ -84,7 +83,6 @@ public class GetDataSteps extends ScenarioSteps {
     @Step("Get Data From PokemonDb")
     private PokemonModel getDataFromPokemonDb(PokemonModel pokemonModel, WebDriver webdriver)  throws Exception {
         webdriver.get(pokemonModel.getUrl());
-        webdriver.manage().window().maximize();
         File src= ((TakesScreenshot)webdriver).getScreenshotAs(OutputType.FILE);
         try {
             FileUtils.copyFile(src,new File(System.getProperty("user.dir")  + PATH_REPORT + "/"+POKEMONDB_FOLDER + "/"+pokemonModel.getPokemonName().toLowerCase()+".png"));
