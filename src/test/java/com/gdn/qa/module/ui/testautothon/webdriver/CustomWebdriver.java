@@ -38,7 +38,7 @@ public class CustomWebdriver implements DriverSource {
         }else if (variables.getProperty("browser.type").equalsIgnoreCase("REMOTE")){
             DesiredCapabilities capabilities = new DesiredCapabilities();
             capabilities.setBrowserName("chrome");
-            capabilities.setVersion("latest");
+            capabilities.setVersion("75.0");
             capabilities.setCapability("enableVNC", true);
             capabilities.setCapability("enableVideo", false);
 
