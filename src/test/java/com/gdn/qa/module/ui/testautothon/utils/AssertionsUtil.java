@@ -36,13 +36,17 @@ public class AssertionsUtil {
         PokemonModel pokedbModel = pokemonResult.getDataPokemonDb();
         PokemonModel pokeApi = pokemonResult.getDataPokeApi();
         if (pokedbModel != null) {
-            return PokemonAssertions.builder()
-                    .nationalNumber(pokeApi.getNationalNumber().equalsIgnoreCase(pokedbModel.getNationalNumber()))
-                    .height(pokeApi.getHeightInMeter().equals(pokedbModel.getHeightInMeter()))
-                    .weight(pokeApi.getWeightInKg().equals(pokedbModel.getWeightInKg()))
-                    .type(comparePokemonTypes(pokeApi.getPokemonTypes(), pokedbModel.getPokemonTypes(), false))
-                    .hp(pokeApi.getHp().equals(pokedbModel.getHp()))
-                    .build();
+            try{
+                return PokemonAssertions.builder()
+                        .nationalNumber(pokeApi.getNationalNumber().equalsIgnoreCase(pokedbModel.getNationalNumber()))
+                        .height(pokeApi.getHeightInMeter().equals(pokedbModel.getHeightInMeter()))
+                        .weight(pokeApi.getWeightInKg().equals(pokedbModel.getWeightInKg()))
+                        .type(comparePokemonTypes(pokeApi.getPokemonTypes(), pokedbModel.getPokemonTypes(), false))
+                        .hp(pokeApi.getHp().equals(pokedbModel.getHp()))
+                        .build();
+            }catch (Exception e){
+                return null;
+            }
         } else {
             return null;
         }
