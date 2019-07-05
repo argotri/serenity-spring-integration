@@ -6,7 +6,11 @@ import net.thucydides.core.webdriver.DriverSource;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +35,23 @@ public class CustomWebdriver implements DriverSource {
             chromeOptions.setExperimentalOption("mobileEmulation", mobileEmulation);
             chromeOptions.addArguments("--lang=id");
             return new ChromeDriver(chromeOptions);
+        }else if (variables.getProperty("browser.type").equalsIgnoreCase("REMOTE")){
+            DesiredCapabilities capabilities = new DesiredCapabilities();
+            capabilities.setBrowserName("chrome");
+            capabilities.setVersion("latest");
+            capabilities.setCapability("enableVNC", true);
+            capabilities.setCapability("enableVideo", false);
+
+            try {
+                return new RemoteWebDriver(
+                        URI.create("http://10.148.0.12:4444/wd/hub").toURL(),
+                        capabilities
+                );
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
         }
+
         return new ChromeDriver();
     }
 
