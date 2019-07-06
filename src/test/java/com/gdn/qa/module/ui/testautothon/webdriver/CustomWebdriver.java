@@ -44,7 +44,7 @@ public class CustomWebdriver implements DriverSource {
 
             try {
                 return new RemoteWebDriver(
-                        URI.create("http://10.148.0.12:4444/wd/hub").toURL(),
+                        URI.create("http://10.148.0.16:4444/wd/hub").toURL(),
                         capabilities
                 );
             } catch (MalformedURLException e) {
