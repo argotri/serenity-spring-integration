@@ -42,6 +42,7 @@ public class GetDataSteps extends ScenarioSteps {
                     setDataWikipedia(getDataFromWikipedia(pokemonResult.getDataWikipedia(), webDriver));
             pokemonResult.setDataPokemonDb(getDataFromPokemonDb(pokemonResult.getDataPokemonDb(), webDriver));
             pokemonResult.setDataPokeApi(getDataFromPokemonApi(pokemonResult.getName()));
+            webDriver.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
