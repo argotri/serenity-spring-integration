@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gdn.qa.module.ui.testautothon.annotation.BlibliSteps;
 import com.gdn.qa.module.ui.testautothon.data.PokemonData;
 import com.gdn.qa.module.ui.testautothon.model.PokemonResult;
+import com.gdn.qa.module.ui.testautothon.properties.Properties;
 import com.gdn.qa.module.ui.testautothon.runnerAutomation.PokemonRunner;
 import com.gdn.qa.module.ui.testautothon.steps.serenity.PokemonSteps;
 import cucumber.api.java.en.Given;
@@ -46,6 +47,9 @@ public class PikachuSteps {
     @Autowired
     private PokemonData pokemonData;
 
+    @Autowired
+    Properties properties;
+
 
 
   /*  @Given("^User on Google homepage$")
@@ -79,6 +83,7 @@ public class PikachuSteps {
 
     @Given("^open a browser$")
     public void openABrowser() {
+        System.out.println("Properties " + properties);
 //        System.out.println("Pokemon Data" + pokemonData.getWikipediaDatas());
 //        System.out.println("Pokemon Data" + pokemonData.getPokemonDbUiDatas());
         File file = new File("report", "<directory>/target<file>");

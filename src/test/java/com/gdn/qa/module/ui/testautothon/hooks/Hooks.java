@@ -5,6 +5,7 @@ import com.gdn.qa.module.ui.testautothon.data.PokemonData;
 import com.gdn.qa.module.ui.testautothon.model.PokemonModel;
 import com.gdn.qa.module.ui.testautothon.model.PokemonResult;
 import com.gdn.qa.module.ui.testautothon.pages.GooglePages;
+import com.gdn.qa.module.ui.testautothon.properties.Properties;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import lombok.extern.log4j.Log4j;
@@ -25,9 +26,12 @@ public class Hooks {
 
     @Autowired
     GooglePages googlePages;
+    @Autowired
+    Properties properties;
 
     @Before
     public void populateDataPokemon() throws IOException {
+        System.out.println("Argo is ganteng : " +properties.isGanteng() );
         pokemonData.setRunMode(SystemEnvironmentVariables.createEnvironmentVariables().getProperty("browser.type"));
         List<PokemonResult> pokemonResults = new ArrayList<>();
 //        List<PokemonModel> wikipediaModels = new ArrayList<>();

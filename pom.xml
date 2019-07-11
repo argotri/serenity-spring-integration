@@ -89,6 +89,20 @@
                 </exclusion>
             </exclusions>-->
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+            <version>2.1.6.RELEASE</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>2.1.6.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
@@ -141,12 +155,13 @@
                 <version>2.19.1</version>
                 <configuration>
                     <includes>
-                        <include>**/*.java</include>
+                        <include>**/DefinitionTestSuite*.java</include>
                     </includes>
                     <argLine>-Xmx512m</argLine>
                     <systemPropertyVariables>
                         <!--<webdriver.driver>${webdriver.driver}</webdriver.driver>-->
                         <cucumber.options>--junit,--step-notifications</cucumber.options>
+                        <spring.config.location>classpath:/application.properties</spring.config.location>
                     </systemPropertyVariables>
                 </configuration>
                 <executions>

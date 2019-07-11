@@ -1,6 +1,7 @@
 package com.gdn.qa.module.ui.testautothon.annotation;
 
 import com.gdn.qa.module.ui.testautothon.AppConfig;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.lang.annotation.ElementType;
@@ -16,5 +17,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @ContextConfiguration(classes = AppConfig.class)
+@SpringBootTest
 public @interface BlibliSteps {
 }
