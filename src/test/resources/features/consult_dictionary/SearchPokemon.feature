@@ -7,6 +7,6 @@ Feature: Searching pokemon
     When user collect pokemon data from wikipedia , PokemonDB and PokeAPI with '3' thread
     Then the data between wikipedia and pokemonDB should be same
     And the data between PokemonDB and pokeApi should be same
-    When Generate Report
+    Then Generate Report
     Then validate There are no error
 

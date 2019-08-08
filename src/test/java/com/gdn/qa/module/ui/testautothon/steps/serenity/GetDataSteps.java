@@ -38,9 +38,18 @@ public class GetDataSteps extends ScenarioSteps {
         webDriver = createNewSession(webDriver);
         driverProperties = new DriverProperties();
         try {
-            pokemonResult.
-                    setDataWikipedia(getDataFromWikipedia(pokemonResult.getDataWikipedia(), webDriver));
+
+            try{
+                System.out.println("Get Data Wikipedia");
+                pokemonResult.
+                        setDataWikipedia(getDataFromWikipedia(pokemonResult.getDataWikipedia(), webDriver));
+            }catch (Exception e){
+                System.out.println("Failed to get wikipedia");
+                e.printStackTrace();
+            }
+            System.out.println("Get Data Pokemon DB");
             pokemonResult.setDataPokemonDb(getDataFromPokemonDb(pokemonResult.getDataPokemonDb(), webDriver));
+            System.out.println("Get Data Pokemon API");
             pokemonResult.setDataPokeApi(getDataFromPokemonApi(pokemonResult.getName()));
             webDriver.close();
         } catch (Exception e) {
@@ -60,13 +69,14 @@ public class GetDataSteps extends ScenarioSteps {
             e.printStackTrace();
         }
         WebDriverWait wait = new WebDriverWait(webdriver, 10);
+        waitABit(2000);
         pokemonModel.setNationalNumber(wait.until(ExpectedConditions.visibilityOf(webdriver.findElement(By.xpath("//table[@class='infobox']//th//table//tbody//tr//center//b")))).getText());
         pokemonModel.setImageUrl(wait.until(ExpectedConditions.visibilityOf(webdriver.findElement(By.xpath("//div[@class='floatnone']//a[@class='image']/img")))).getAttribute("src"));
         // click tampilkan
         try{
-            wait.until(ExpectedConditions.visibilityOf(webdriver.findElement(By.xpath("//a[@id='collapseButton0']")))).click();
+            wait.until(ExpectedConditions.visibilityOf(webdriver.findElement(By.xpath("//table[@class=\"infobox\"]//a[contains(text(),\"Kembangkan\")]")))).click();
         }catch (Exception e){
-
+            e.printStackTrace();
         }
         pokemonModel.setNameInJapanese(webdriver.findElement(By.xpath("//th/a[contains(@title,\"Bahasa Jepang\")]/ancestor::tr[1]/td")).getText());
         // get weight
@@ -114,6 +124,7 @@ public class GetDataSteps extends ScenarioSteps {
         PokemonModel pokemonModel = PokemonModel.builder().build();
         pokemonModel.setPokemonName(pokemonName);
         pokemonModel.setUrl("https://pokeapi.co/api/v2/pokemon/" + pokemonName);
+        System.out.println("Pokemon Model " + pokemonModel.toString());
         Response response = get(pokemonModel.getUrl());
         if(response.statusCode()==200){
             JsonPath jsonPath = new JsonPath(response.asString());
